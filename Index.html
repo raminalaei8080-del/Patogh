@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>پاتوق | سینمای دو نفره آنلاین</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        patogh: {
+                            bg: '#0b0914',
+                            card: '#151226',
+                            border: '#2a244d',
+                            primary: '#ec4899',
+                            secondary: '#8b5cf6',
+                            accent: '#06b6d4',
+                            dark: '#05030a'
+                        }
+                    },
+                    fontFamily: {
+                        vazir: ['Vazirmatn', 'Tahoma', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'neon-pink': '0 0 20px rgba(236, 72, 153, 0.4)',
+                        'neon-purple': '0 0 20px rgba(139, 92, 246, 0.4)',
+                        'glow': '0 0 35px rgba(236, 72, 153, 0.25)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- PeerJS CDN with primary & fallback sources -->
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script>
+        if (typeof Peer === 'undefined') {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.2/peerjs.min.js"><\/script>');
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+            background-color: #0b0914;
+            color: #f3f4f6;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        .glass-panel {
+            background: rgba(21, 18, 38, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+        }
+
+        .glass-button {
+            background: rgba(139, 92, 246, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-button:hover {
+            background: rgba(236, 72, 153, 0.25);
+            border-color: rgba(236, 72, 153, 0.6);
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.4);
+        }
+
+        ::cue {
+            background: rgba(0, 0, 0, 0.85) !important;
+            color: #ffffff !important;
+            font-family: 'Vazirmatn', sans-serif !important;
+            font-size: 1.25rem !important;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9) !important;
+            border-radius: 6px;
+            padding: 4px 10px;
+        }
+
+        @media (max-width: 640px) {
+            ::cue {
+                font-size: 0.95rem !important;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(11, 9, 20, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.4);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(236, 72, 153, 0.6);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 12px rgba(236, 72, 153, 0.6);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-patogh-primary selection:text-white">
+
+    <header class="w-full glass-panel sticky top-0 z-40 border-b border-patogh-border/50 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 space-x-reverse cursor-pointer" onclick="location.reload()">
+                <div class="relative w-10 h-10 flex items-center justify-center">
+                    <svg class="w-full h-full drop-shadow-[0_0_10px_rgba(236,72,153,0.7)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ec4899" />
+                                <stop offset="100%" stop-color="#8b5cf6" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M50 88S15 62 15 35a20 20 0 0135-13 20 20 0 0135 13c0 27-35 53-35 53z" fill="url(#logo-grad)" opacity="0.9"/>
+                        <circle cx="35" cy="35" r="5" fill="#0b0914"/>
+                        <circle cx="65" cy="35" r="5" fill="#0b0914"/>
+                        <circle cx="50" cy="50" r="6" fill="#0b0914"/>
+                        <rect x="22" y="58" width="56" height="6" rx="3" fill="#0b0914" opacity="0.8"/>
+                        <polygon points="45,43 58,50 45,57" fill="#ffffff"/>
+                    </svg>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-l from-patogh-primary to-patogh-secondary glow-text">پاتوق</span>
+                    <span class="text-[10px] text-gray-400 font-light -mt-1 tracking-widest">PATOGH CINEMA</span>
+                </div>
+            </div>
+
+            <!-- Status Indicator & Peer ID Display -->
+            <div class="flex items-center gap-3">
+                <div id="connectionStatusBadge" class="hidden items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-800/80 border border-gray-700 text-gray-300">
+                    <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse"></span>
+                    <span id="statusText">در حال راه اندازی...</span>
+                </div>
+
+                <button id="quickInviteBtn" onclick="copyInviteLink()" class="hidden glass-button px-3 py-1.5 rounded-xl text-xs font-medium text-patogh-primary hover:text-white flex items-center gap-1.5">
+                    <i data-lucide="share-2" class="w-4 h-4"></i>
+                    <span>دعوت پارتنر</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto p-3 md:p-6 flex flex-col justify-center">
+
+        <section id="lobbySection" class="max-w-xl mx-auto w-full">
+            <div class="glass-panel p-6 md:p-8 rounded-3xl shadow-glow text-center border border-patogh-secondary/30 relative overflow-hidden">
+                <div class="absolute -top-20 -right-20 w-40 h-40 bg-patogh-primary/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-patogh-secondary/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="mb-6">
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-white mb-2">سینمای اختصاصی دو نفره</h1>
+                    <p class="text-gray-300 text-sm leading-relaxed">فیلم و سریال دلخواهتون رو بدون ناهماهنگی، همزمان و با کیفیت اصلی همراه هم تماشا کنید.</p>
+                </div>
+
+                <!-- Input User Nickname -->
+                <div class="mb-5 text-right">
+                    <label class="block text-xs text-gray-400 mb-2 mr-1">نام یا مستعار شما:</label>
+                    <div class="relative">
+                        <i data-lucide="user" class="w-5 h-5 absolute right-3 top-3 text-gray-400"></i>
+                        <input type="text" id="usernameInput" placeholder="مثلاً: آرش" class="w-full bg-patogh-dark/80 border border-patogh-border focus:border-patogh-primary focus:ring-1 focus:ring-patogh-primary rounded-xl py-2.5 pr-10 pl-4 text-sm text-white placeholder-gray-500 outline-none transition">
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col gap-3">
+                    <button id="createRoomBtn" onclick="createNewRoom()" class="w-full py-3.5 px-4 bg-gradient-to-r from-patogh-primary to-patogh-secondary rounded-xl font-bold text-white shadow-neon-pink hover:opacity-95 transition flex items-center justify-center gap-2 text-sm">
+                        <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                        <span>ساخت اتاق سینما جدید</span>
+                    </button>
+
+                    <div class="relative flex py-2 items-center">
+                        <div class="flex-grow border-t border-gray-700"></div>
+                        <span class="flex-shrink mx-4 text-xs text-gray-500">یا ورود به اتاق پارتنر</span>
+                        <div class="flex-grow border-t border-gray-700"></div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <input type="text" id="joinRoomIdInput" placeholder="کد اتاق (مثلاً: patogh-1234)" class="flex-1 bg-patogh-dark/80 border border-patogh-border focus:border-patogh-secondary rounded-xl py-2.5 px-3 text-sm text-center text-white placeholder-gray-500 outline-none dir-ltr">
+                        <button onclick="joinRoomFromInput()" class="py-2.5 px-5 bg-patogh-card hover:bg-patogh-border border border-patogh-secondary/40 text-patogh-secondary hover:text-white font-semibold rounded-xl text-sm transition">
+                            ورود
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="theaterSection" class="hidden flex-col lg:flex-row gap-4 w-full h-full">
+
+            <!-- VIDEO PLAYER CONTAINER -->
+            <div class="flex-1 flex flex-col gap-3">
+                <div id="videoContainer" class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-patogh-border flex items-center justify-center group">
+                    
+                    <video id="mainVideo" class="w-full h-full object-contain" playsinline preload="auto"></video>
+
+                    <!-- Mobile Unmute Overlay -->
+                    <div id="mobilePlayOverlay" class="absolute inset-0 bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center gap-3 z-30 cursor-pointer hidden" onclick="handleMobilePlayPermission()">
+                        <div class="w-16 h-16 rounded-full bg-patogh-primary/80 flex items-center justify-center shadow-neon-pink animate-bounce">
+                            <i data-lucide="play" class="w-8 h-8 text-white fill-white mr-1"></i>
+                        </div>
+                        <p class="text-white font-medium text-sm">برای شروع همگام‌سازی و فعال‌سازی صدا لمس کنید</p>
+                    </div>
+
+                    <div class="absolute top-4 right-4 z-20 pointer-events-none opacity-40 flex items-center gap-1.5">
+                        <span class="text-xs font-bold text-white tracking-widest">PATOGH</span>
+                    </div>
+
+                    <!-- File Picker Overlay -->
+                    <div id="localFileOverlay" class="absolute inset-0 bg-patogh-dark/95 z-20 flex flex-col items-center justify-center p-6 text-center">
+                        <i data-lucide="film" class="w-16 h-16 text-patogh-secondary mb-3 animate-pulse"></i>
+                        <h3 class="text-lg font-bold text-white mb-2">انتخاب فایل ویدیو</h3>
+                        <p class="text-xs text-gray-400 max-w-md mb-5 leading-relaxed">
+                            لطفاً فایل ویدیویی خود را انتخاب کنید. هم شما و هم پارتنرتان فایل یکسان را روی گوشی/کامپیوتر خود باز کنید تا با بالا‌ترین سرعت و بدون مصرف ترافیک اضافه، پخش همگام‌سازی شود.
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-3 justify-center">
+                            <label class="cursor-pointer bg-gradient-to-r from-patogh-primary to-patogh-secondary text-white font-semibold text-xs py-2.5 px-5 rounded-xl shadow-neon-pink hover:opacity-90 transition flex items-center gap-2">
+                                <i data-lucide="upload" class="w-4 h-4"></i>
+                                <span>انتخاب فایل ویدیو</span>
+                                <input type="file" id="videoFileInput" accept="video/mp4,video/mkv,video/webm,video/*" class="hidden" onchange="handleVideoFileSelect(event)">
+                            </label>
+
+                            <label class="cursor-pointer bg-patogh-card border border-patogh-border text-gray-300 font-medium text-xs py-2.5 px-4 rounded-xl hover:text-white transition flex items-center gap-2">
+                                <i data-lucide="subtitles" class="w-4 h-4 text-patogh-accent"></i>
+                                <span>افزودن زیرنویس (SRT/VTT)</span>
+                                <input type="file" id="subtitleFileInput" accept=".srt,.vtt" class="hidden" onchange="handleSubtitleFileSelect(event)">
+                            </label>
+                        </div>
+                        <span id="selectedFileName" class="text-[11px] text-patogh-accent mt-3 block dir-ltr truncate max-w-xs"></span>
+                    </div>
+                </div>
+
+                <!-- VIDEO CONTROL BAR -->
+                <div class="glass-panel p-3 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-xs border border-patogh-border">
+                    <div class="flex items-center gap-2">
+                        <button id="playBtn" onclick="togglePlayPause()" class="w-9 h-9 rounded-xl bg-patogh-primary/20 text-patogh-primary border border-patogh-primary/40 flex items-center justify-center hover:bg-patogh-primary hover:text-white transition">
+                            <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+                        </button>
+
+                        <div class="text-gray-300 font-mono text-[11px]">
+                            <span id="currentTime">00:00</span> / <span id="durationTime">00:00</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 min-w-[150px] mx-2">
+                        <input type="range" id="progressBar" min="0" max="100" value="0" step="0.1" oninput="handleSeekInput(this.value)" class="w-full h-1.5 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-patogh-primary">
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="reSyncVideo()" title="همگام‌سازی اجباری مجدد" class="p-2 text-gray-400 hover:text-patogh-primary transition">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        </button>
+
+                        <label title="تغییر ویدیو" class="p-2 text-gray-400 hover:text-white cursor-pointer transition">
+                            <i data-lucide="folder-open" class="w-4 h-4"></i>
+                            <input type="file" accept="video/*" class="hidden" onchange="handleVideoFileSelect(event)">
+                        </label>
+
+                        <label title="تغییر زیرنویس" class="p-2 text-gray-400 hover:text-patogh-accent cursor-pointer transition">
+                            <i data-lucide="subtitles" class="w-4 h-4"></i>
+                            <input type="file" accept=".srt,.vtt" class="hidden" onchange="handleSubtitleFileSelect(event)">
+                        </label>
+
+                        <button onclick="toggleFullscreen()" class="p-2 text-gray-400 hover:text-white transition">
+                            <i data-lucide="maximize" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIDEBAR: CHAT & PARTNER STATUS -->
+            <div class="w-full lg:w-80 h-[380px] lg:h-auto flex flex-col glass-panel rounded-2xl border border-patogh-border overflow-hidden">
+                <div class="p-3 border-b border-patogh-border/60 bg-patogh-dark/50 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="relative">
+                            <i data-lucide="message-square" class="w-4 h-4 text-patogh-primary"></i>
+                            <span id="chatPartnerDot" class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-gray-500"></span>
+                        </div>
+                        <span class="text-xs font-bold text-gray-200">گفتگوی زنده</span>
+                    </div>
+                    <span id="partnerNameDisplay" class="text-[11px] text-gray-400">در انتظار پارتنر...</span>
+                </div>
+
+                <div id="chatMessages" class="flex-1 p-3 overflow-y-auto flex flex-col gap-2.5 text-xs">
+                    <div class="text-center my-2">
+                        <span class="bg-patogh-card/80 text-gray-400 text-[10px] px-2.5 py-1 rounded-full border border-patogh-border">
+                            به اتاق سینما خوش آمدید 🎬
+                        </span>
+                    </div>
+                </div>
+
+                <div class="px-2 py-1 bg-patogh-dark/30 border-t border-patogh-border/40 flex justify-around">
+                    <button onclick="sendQuickEmoji('❤️')" class="hover:scale-125 transition text-sm">❤️</button>
+                    <button onclick="sendQuickEmoji('😂')" class="hover:scale-125 transition text-sm">😂</button>
+                    <button onclick="sendQuickEmoji('😱')" class="hover:scale-125 transition text-sm">😱</button>
+                    <button onclick="sendQuickEmoji('😭')" class="hover:scale-125 transition text-sm">😭</button>
+                    <button onclick="sendQuickEmoji('🍿')" class="hover:scale-125 transition text-sm">🍿</button>
+                </div>
+
+                <form id="chatForm" onsubmit="handleSendChatMessage(event)" class="p-2 border-t border-patogh-border bg-patogh-dark/60 flex gap-1.5">
+                    <input type="text" id="chatInput" placeholder="پیام شما..." autocomplete="off" class="flex-1 bg-patogh-dark border border-patogh-border focus:border-patogh-primary rounded-xl px-3 py-2 text-xs text-white outline-none">
+                    <button type="submit" class="p-2 bg-patogh-primary text-white rounded-xl hover:opacity-90 transition">
+                        <i data-lucide="send" class="w-3.5 h-3.5 rotate-180"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script>
+        const state = {
+            peer: null,
+            conn: null,
+            roomId: null,
+            isHost: false,
+            myUsername: 'مهمان',
+            partnerUsername: 'پارتنر',
+            ignoreEvents: false, // Prevents synchronization loopback
+            lastSyncTime: 0,
+            heartbeatInterval: null
+        };
+
+        const elements = {
+            lobbySection: document.getElementById('lobbySection'),
+            theaterSection: document.getElementById('theaterSection'),
+            usernameInput: document.getElementById('usernameInput'),
+            connectionStatusBadge: document.getElementById('connectionStatusBadge'),
+            statusDot: document.getElementById('statusDot'),
+            statusText: document.getElementById('statusText'),
+            quickInviteBtn: document.getElementById('quickInviteBtn'),
+            mainVideo: document.getElementById('mainVideo'),
+            localFileOverlay: document.getElementById('localFileOverlay'),
+            playBtn: document.getElementById('playBtn'),
+            progressBar: document.getElementById('progressBar'),
+            currentTime: document.getElementById('currentTime'),
+            durationTime: document.getElementById('durationTime'),
+            chatMessages: document.getElementById('chatMessages'),
+            chatInput: document.getElementById('chatInput'),
+            chatPartnerDot: document.getElementById('chatPartnerDot'),
+            partnerNameDisplay: document.getElementById('partnerNameDisplay'),
+            mobilePlayOverlay: document.getElementById('mobilePlayOverlay')
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            checkUrlHashForRoom();
+            setupVideoEventListeners();
+        });
+
+        function initializePeer(targetRoomId = null) {
+            const randomId = 'patogh-' + Math.random().toString(36).substring(2, 8);
+            state.roomId = targetRoomId || randomId;
+
+            showStatus('در حال اتصال به شبکه...', 'yellow');
+
+            state.peer = new Peer(state.isHost ? state.roomId : undefined, {
+                config: {
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:stun1.l.google.com:19302' },
+                        { urls: 'stun:stun2.l.google.com:19302' },
+                        { urls: 'stun:stun4.l.google.com:19302' }
+                    ]
+                },
+                debug: 0
+            });
+
+            state.peer.on('open', (id) => {
+                if (!state.isHost) {
+                    connectToHost(targetRoomId);
+                } else {
+                    showStatus('منتظر ورود پارتنر...', 'yellow');
+                    updateInviteUrlHash(state.roomId);
+                }
+            });
+
+            state.peer.on('connection', (connection) => {
+                state.conn = connection;
+                setupDataConnection();
+            });
+
+            state.peer.on('error', (err) => {
+                console.error('PeerJS Error:', err);
+                showToast('خطا در ارتباط شبکه. کد را چک کنید.', 'error');
+                showStatus('خطا در اتصال', 'red');
+            });
+        }
+
+        function createNewRoom() {
+            state.myUsername = elements.usernameInput.value.trim() || 'میزبان';
+            state.isHost = true;
+            switchToTheaterUI();
+            initializePeer();
+        }
+
+        function joinRoomFromInput() {
+            const inputVal = document.getElementById('joinRoomIdInput').value.trim();
+            if (!inputVal) {
+                showToast('لطفا کد اتاق را وارد کنید', 'warning');
+                return;
+            }
+            state.myUsername = elements.usernameInput.value.trim() || 'مهمان';
+            state.isHost = false;
+            switchToTheaterUI();
+            initializePeer(inputVal);
+        }
+
+        function checkUrlHashForRoom() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && hash.startsWith('patogh-')) {
+                document.getElementById('joinRoomIdInput').value = hash;
+                showToast('کد اتاق از لینک فراخوانی شد', 'info');
+            }
+        }
+
+        function connectToHost(hostId) {
+            showStatus('در حال اتصال به پارتنر...', 'yellow');
+            state.conn = state.peer.connect(hostId, {
+                metadata: { username: state.myUsername },
+                reliable: true
+            });
+            setupDataConnection();
+        }
+
+        function setupDataConnection() {
+            if (!state.conn) return;
+
+            state.conn.on('open', () => {
+                showStatus('پارتنر متصل شد', 'green');
+                elements.chatPartnerDot.className = "absolute -top-1 -right-1 w-2 h-2 rounded-full bg-green-500 animate-ping";
+                
+                sendNetworkData('handshake', { username: state.myUsername });
+                showToast('اتصال با پارتنر برقرار شد!', 'success');
+
+                startSyncHeartbeat();
+            });
+
+            state.conn.on('data', (data) => {
+                handleIncomingMessage(data);
+            });
+
+            state.conn.on('close', () => {
+                showStatus('پارتنر قطع شد', 'red');
+                elements.chatPartnerDot.className = "absolute -top-1 -right-1 w-2 h-2 rounded-full bg-red-500";
+                elements.partnerNameDisplay.innerText = "پارتنر قطع شد";
+                showToast('ارتباط پارتنر قطع شد', 'error');
+                stopSyncHeartbeat();
+            });
+        }
+
+        function startSyncHeartbeat() {
+            stopSyncHeartbeat();
+            state.heartbeatInterval = setInterval(() => {
+                if (state.isHost && !elements.mainVideo.paused && elements.mainVideo.duration) {
+                    sendNetworkData('heartbeat', { time: elements.mainVideo.currentTime });
+                }
+            }, 3000);
+        }
+
+        function stopSyncHeartbeat() {
+            if (state.heartbeatInterval) clearInterval(state.heartbeatInterval);
+        }
+
+        function sendNetworkData(type, payload = {}) {
+            if (state.conn && state.conn.open) {
+                state.conn.send({ type, payload, timestamp: Date.now() });
+            }
+        }
+
+        function handleIncomingMessage(msg) {
+            const { type, payload } = msg;
+
+            switch (type) {
+                case 'handshake':
+                    state.partnerUsername = payload.username || 'پارتنر';
+                    elements.partnerNameDisplay.innerText = state.partnerUsername;
+                    showToast(`${state.partnerUsername} وارد اتاق شد`, 'info');
+                    break;
+
+                case 'play':
+                    state.ignoreEvents = true;
+                    if (Math.abs(elements.mainVideo.currentTime - payload.time) > 0.5) {
+                        elements.mainVideo.currentTime = payload.time;
+                    }
+                    elements.mainVideo.play().then(() => {
+                        state.ignoreEvents = false;
+                        updatePlayPauseUI(true);
+                    }).catch(() => {
+                        state.ignoreEvents = false;
+                        elements.mobilePlayOverlay.classList.remove('hidden');
+                    });
+                    break;
+
+                case 'pause':
+                    state.ignoreEvents = true;
+                    elements.mainVideo.pause();
+                    elements.mainVideo.currentTime = payload.time;
+                    setTimeout(() => { state.ignoreEvents = false; }, 100);
+                    updatePlayPauseUI(false);
+                    break;
+
+                case 'seek':
+                    state.ignoreEvents = true;
+                    elements.mainVideo.currentTime = payload.time;
+                    setTimeout(() => { state.ignoreEvents = false; }, 100);
+                    break;
+
+                case 'heartbeat':
+                    if (!state.isHost && !elements.mainVideo.paused) {
+                        if (Math.abs(elements.mainVideo.currentTime - payload.time) > 2) {
+                            state.ignoreEvents = true;
+                            elements.mainVideo.currentTime = payload.time;
+                            setTimeout(() => { state.ignoreEvents = false; }, 100);
+                        }
+                    }
+                    break;
+
+                case 'chat':
+                    appendChatMessage(payload.sender, payload.text, false);
+                    break;
+            }
+        }
+
+        function setupVideoEventListeners() {
+            const video = elements.mainVideo;
+
+            video.addEventListener('play', () => {
+                updatePlayPauseUI(true);
+                if (!state.ignoreEvents) {
+                    sendNetworkData('play', { time: video.currentTime });
+                }
+            });
+
+            video.addEventListener('pause', () => {
+                updatePlayPauseUI(false);
+                if (!state.ignoreEvents) {
+                    sendNetworkData('pause', { time: video.currentTime });
+                }
+            });
+
+            video.addEventListener('timeupdate', () => {
+                if (video.duration) {
+                    elements.progressBar.value = (video.currentTime / video.duration) * 100;
+                    elements.currentTime.innerText = formatTime(video.currentTime);
+                }
+            });
+
+            video.addEventListener('loadedmetadata', () => {
+                elements.durationTime.innerText = formatTime(video.duration);
+            });
+        }
+
+        function handleVideoFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const fileURL = URL.createObjectURL(file);
+                elements.mainVideo.src = fileURL;
+                elements.localFileOverlay.classList.add('hidden');
+                document.getElementById('selectedFileName').innerText = file.name;
+                showToast(`ویدیو بارگذاری شد: ${file.name}`, 'success');
+            }
+        }
+
+        function handleSubtitleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let content = e.target.result;
+                
+                // Convert SRT to WebVTT cleanly with Regex
+                if (file.name.toLowerCase().endsWith('.srt')) {
+                    content = "WEBVTT\n\n" + content
+                        .replace(/\r\n|\r/g, '\n')
+                        .replace(/(\d\d:\d\d:\d\d),(\d\d\d)/g, '$1.$2');
+                }
+
+                const blob = new Blob([content], { type: 'text/vtt;charset=utf-8' });
+                const trackUrl = URL.createObjectURL(blob);
+
+                // Clean existing tracks
+                const existingTrack = elements.mainVideo.querySelector('track');
+                if (existingTrack) elements.mainVideo.removeChild(existingTrack);
+
+                const track = document.createElement('track');
+                track.kind = 'subtitles';
+                track.label = 'فارسی';
+                track.srclang = 'fa';
+                track.src = trackUrl;
+                track.default = true;
+
+                elements.mainVideo.appendChild(track);
+                if (elements.mainVideo.textTracks && elements.mainVideo.textTracks[0]) {
+                    elements.mainVideo.textTracks[0].mode = 'showing';
+                }
+
+                showToast('زیرنویس فارسی با موفقیت افزوده شد', 'success');
+            };
+            reader.readAsText(file, 'UTF-8');
+        }
+
+        function togglePlayPause() {
+            if (elements.mainVideo.paused) {
+                elements.mainVideo.play().catch(() => {
+                    elements.mobilePlayOverlay.classList.remove('hidden');
+                });
+            } else {
+                elements.mainVideo.pause();
+            }
+        }
+
+        function handleMobilePlayPermission() {
+            elements.mobilePlayOverlay.classList.add('hidden');
+            elements.mainVideo.play();
+        }
+
+        function handleSeekInput(val) {
+            if (!elements.mainVideo.duration) return;
+            const seekTime = (val / 100) * elements.mainVideo.duration;
+            state.ignoreEvents = true;
+            elements.mainVideo.currentTime = seekTime;
+            setTimeout(() => { state.ignoreEvents = false; }, 150);
+            sendNetworkData('seek', { time: seekTime });
+        }
+
+        function reSyncVideo() {
+            if (!elements.mainVideo.duration) return;
+            sendNetworkData(elements.mainVideo.paused ? 'pause' : 'play', {
+                time: elements.mainVideo.currentTime
+            });
+            showToast('درخواست همگام‌سازی مجدد ارسال شد', 'info');
+        }
+
+        function updatePlayPauseUI(isPlaying) {
+            elements.playBtn.innerHTML = isPlaying 
+                ? `<i data-lucide="pause" class="w-4 h-4 fill-current"></i>` 
+                : `<i data-lucide="play" class="w-4 h-4 fill-current"></i>`;
+            lucide.createIcons();
+        }
+
+        function toggleFullscreen() {
+            const container = document.getElementById('videoContainer');
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(err => {
+                    showToast('امکان حالت تمام‌صفحه در مرورگر شما نیست', 'warning');
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function handleSendChatMessage(e) {
+            e.preventDefault();
+            const text = elements.chatInput.value.trim();
+            if (!text) return;
+
+            appendChatMessage(state.myUsername, text, true);
+            sendNetworkData('chat', { sender: state.myUsername, text });
+            elements.chatInput.value = '';
+        }
+
+        function sendQuickEmoji(emoji) {
+            appendChatMessage(state.myUsername, emoji, true);
+            sendNetworkData('chat', { sender: state.myUsername, text: emoji });
+        }
+
+        function appendChatMessage(sender, text, isMe) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `flex flex-col ${isMe ? 'items-start' : 'items-end'}`;
+
+            msgDiv.innerHTML = `
+                <span class="text-[10px] text-gray-500 mb-0.5 px-1">${sender}</span>
+                <div class="max-w-[85%] px-3 py-1.5 rounded-2xl text-xs ${
+                    isMe 
+                        ? 'bg-patogh-primary/20 text-white border border-patogh-primary/30 rounded-tr-none' 
+                        : 'bg-patogh-card text-gray-200 border border-patogh-border rounded-tl-none'
+                }">
+                    ${escapeHTML(text)}
+                </div>
+            `;
+
+            elements.chatMessages.appendChild(msgDiv);
+            elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+        }
+
+        function switchToTheaterUI() {
+            elements.lobbySection.classList.add('hidden');
+            elements.theaterSection.classList.remove('hidden');
+            elements.theaterSection.classList.add('flex');
+            elements.connectionStatusBadge.classList.remove('hidden');
+            elements.connectionStatusBadge.classList.add('flex');
+            elements.quickInviteBtn.classList.remove('hidden');
+            elements.quickInviteBtn.classList.add('flex');
+        }
+
+        function showStatus(text, color) {
+            elements.statusText.innerText = text;
+            const colors = {
+                yellow: 'bg-yellow-500',
+                green: 'bg-green-500',
+                red: 'bg-red-500'
+            };
+            elements.statusDot.className = `w-2.5 h-2.5 rounded-full ${colors[color] || 'bg-gray-500'} animate-pulse`;
+        }
+
+        function updateInviteUrlHash(roomId) {
+            window.location.hash = roomId;
+        }
+
+        function copyInviteLink() {
+            const url = window.location.href;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url);
+            } else {
+                const el = document.createElement('textarea');
+                el.value = url;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+            }
+            showToast('لینک دعوت کپی شد! برای پارتنر ارسال کنید.', 'success');
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            const bgColors = {
+                success: 'bg-green-600/90 border-green-400',
+                error: 'bg-red-600/90 border-red-400',
+                warning: 'bg-yellow-600/90 border-yellow-400',
+                info: 'bg-patogh-secondary/90 border-patogh-primary'
+            };
+
+            toast.className = `pointer-events-auto px-4 py-2.5 rounded-xl text-xs text-white border shadow-lg backdrop-blur-md transition-all duration-300 transform translate-y-2 opacity-0 flex items-center gap-2 ${bgColors[type]}`;
+            toast.innerText = message;
+
+            const container = document.getElementById('toastContainer');
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "00:00";
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+    </script>
+</body>
+</html>
